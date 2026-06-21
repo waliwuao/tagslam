@@ -1,0 +1,48 @@
+# PID Control Configuration
+# Robot movement control based on camera-to-tag position error.
+
+# ---------- TF frames ----------
+world_frame: world       # root frame (same as Tag 0 origin)
+camera_frame: cam0       # camera frame from cameras.yaml
+
+# ---------- Target pose ----------
+# Camera target position relative to Tag 0 origin.
+# Rotation uses Euler angles in radians (x, y, z).
+target:
+  x: 1.0
+  y: 0.0
+  angular: 3.14159       # yaw = π, facing Tag 0 at origin
+
+# ---------- Regulation limits ----------
+max_duration: 3.0        # max regulation time [seconds] before abort
+max_missing_frames: 10   # consecutive frames without tag → abort
+
+# ---------- PID Parameters (three independent controllers) ----------
+pid_x:
+  kp: 0.2
+  ki: 0.005
+  kd: 0.08
+  integral_max: 0.15
+  output_max: 0.2
+
+pid_y:
+  kp: 0.2
+  ki: 0.005
+  kd: 0.08
+  integral_max: 0.15
+  output_max: 0.2
+
+pid_angular:
+  kp: 0.4
+  ki: 0.01
+  kd: 0.12
+  integral_max: 0.1
+  output_max: 0.4
+
+# ---------- Dead zone ----------
+dead_zone_linear: 0.03   # ignore linear error below this [meters]
+dead_zone_angular: 0.08  # ignore angular error below this [radians]
+done_hold_frames: 5      # consecutive frames in dead zone → success
+
+# ---------- Output topic ----------
+cmd_vel_topic: /t0x0101_
